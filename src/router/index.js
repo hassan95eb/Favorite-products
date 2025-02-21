@@ -1,3 +1,4 @@
+import FavoriteView from '@/views/FavoriteView.vue'
 import HomeView from '@/views/HomeView.vue'
 import { createRouter, createWebHistory } from 'vue-router'
 const router = createRouter({
@@ -10,8 +11,8 @@ const router = createRouter({
     },
     {
       path: '/favorite',
-      name: 'Favorit',
-      component: () => import('../views/FavoriteView.vue'),
+      name: 'Favorite',
+      component: FavoriteView,
     },
   ],
 })
