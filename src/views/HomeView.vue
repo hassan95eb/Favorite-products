@@ -1,38 +1,46 @@
 <script setup>
-import axios from 'axios'
-import { onMounted, ref } from 'vue'
+import useFetch from '@/services/useFetch'
+import { useFavorit } from '@/stores/useFavorit'
+import LinedSvg from '@/assets/images/LinedSvg.vue'
+import UnlikeSvg from '@/assets/images/UnlikeSvg.vue'
 
-const posts = ref(null)
-const isLoading = ref(true)
-const error = ref(null)
-const images = ref(null)
+const { products, isLoading, error } = useFetch('/site/api/v1/manage/store/products')
+const favoritStore = useFavorit()
+// const posts = ref(null)
+// const isLoading = ref(true)
+// const error = ref(null)
+// const images = ref(null)
 
-onMounted(async () => {
-  try {
-    const [resPosts, resImages] = await Promise.all(
-      axios.get('https://jsonplaceholder.typicode.com/posts'),
-      axios.get('https://jsonplaceholder.typicode.com/photos?_start=1&_limit=2'),
-    )
-    posts.value = resPosts.data
-    images.value = resImages.data
-    isLoading.value = false
-  } catch (err) {
-    isLoading.value = true
-    error.value = err
-  }
-})
+// onMounted(async () => {
+//   try {
+//     const [resPosts, resImages] = await Promise.all(
+//       axios.get('https://jsonplaceholder.typicode.com/posts'),
+//       axios.get('https://jsonplaceholder.typicode.com/photos?_start=1&_limit=2'),
+//     )
+//     posts.value = resPosts.data
+//     images.value = resImages.data
+//     isLoading.value = false
+//   } catch (err) {
+//     isLoading.value = true
+//     error.value = err
+//   }
+// })
 </script>
 
 <template>
-  <div class="home-data">
-    <div v-for="post in posts" :key="post.id" class="box-data">
+  <div v-if="isLoading">Please Wait....</div>
+  <div v-else class="home-data">
+    <div v-for="product in products" :key="product.id" class="box-data">
       <img
-        v-if="images[post.id]"
-        :src="images.value[post.id].ur"
-        :alt="images.value[post.id].title"
+        :src="'https://carefree95.ir' + product.image"
+        :alt="product.title"
+        style="width: 100%"
       />
-      <p>{{ post.title }}</p>
-      <p>{{ post.body }}</p>
+      <p>{{ product.title }}</p>
+      <p>${{ product.price }}</p>
+      <p v-if="error">error : {{ error }}</p>
+      <p v-if="favoritStore.isFavorit"><LinedSvg /></p>
+      <p v-if="!favoritStore.isFavorit"><UnlikeSvg /></p>
     </div>
   </div>
 </template>
@@ -47,7 +55,7 @@ onMounted(async () => {
 }
 .box-data {
   width: 200px;
-  height: 200px;
+  height: auto;
   box-sizing: border-box;
   border: 1px solid #999494;
   box-shadow: 0 0 0 #999494;
