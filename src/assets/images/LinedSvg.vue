@@ -5,14 +5,7 @@
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 122.88 107.39"
   >
-    <defs>
-      <style>
-        .cls-1 {
-          fill: #ed1b24;
-          fill-rule: evenodd;
-        }
-      </style>
-    </defs>
+    <defs></defs>
     <title>red-heart</title>
     <path
       class="cls-1"
@@ -20,3 +13,12 @@
     />
   </svg>
 </template>
+<script setup>
+//
+</script>
+<style scoped>
+.cls-1 {
+  fill: #ed1b24;
+  fill-rule: evenodd;
+}
+</style>
